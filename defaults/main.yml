@@ -1,0 +1,5 @@
+---
+# default vars file for Watchman
+
+watchman_repository_url: https://github.com/facebook/watchman
+watchman_version: v4.1.0

@@ -1,0 +1,58 @@
+---
+# tasks file for Watchman
+
+- name: Define Watchman source installation directory
+  set_fact:
+    watchman_source_dir: "/tmp/watchman/{{ watchman_version }}"
+
+- name: Create Watchman source installation directory
+  file: >
+    path={{ watchman_source_dir }}
+    state=directory
+  tags: watchman
+
+- name: Clone Watchman
+  git: >
+    repo={{ watchman_repository_url }}
+    dest={{ watchman_source_dir }}
+    version={{ watchman_version }}
+  tags: watchman
+
+- name: Install Watchman build dependencies
+  apt: >
+    pkg={{item}}
+    state=installed
+  with_items:
+     - automake
+     - autoconf
+     - python-dev
+  become: yes
+  become_method: sudo
+  tags: watchman
+
+- name: Autogen Watchman
+  command: >
+    ./autogen.sh
+    chdir={{ watchman_source_dir }}
+  tags: watchman
+
+- name: Configure Watchman
+  command: >
+    ./configure
+    chdir={{ watchman_source_dir }}
+  tags: watchman
+
+- name: Make Watchman
+  command: >
+    make
+    chdir={{ watchman_source_dir }}
+  tags: watchman
+
+- name: Install Watchman
+  command: >
+    make install
+    chdir={{ watchman_source_dir }}
+  become: yes
+  become_method: sudo
+  tags: watchman
+
