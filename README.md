@@ -30,7 +30,7 @@ Install Watchman specifying version
 ```
 - hosts: all
   roles:
-    - { role: dpursehouse.watchman, watchman_version: ba9f239f69287a553ca93af76a27484d83693563 }
+    - { role: dpursehouse.watchman, watchman_version: v4.0.0 }
 ```
 
 License
