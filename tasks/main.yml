@@ -18,7 +18,7 @@
     version={{ watchman_version }}
   tags: watchman
 
-- name: Install Watchman build dependencies
+- name: Install Watchman build dependencies (Debian/Ubuntu)
   apt: >
     pkg={{item}}
     state=installed
@@ -29,6 +29,16 @@
   become: yes
   become_method: sudo
   tags: watchman
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
+- name: Install Watchman build dependencies (RHEL/CentOS)
+  yum: >
+    pkg="@Development tools"
+    state=present
+  become: yes
+  become_method: sudo
+  tags: watchman
+  when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
 
 - name: Autogen Watchman
   command: >
@@ -55,4 +65,3 @@
   become: yes
   become_method: sudo
   tags: watchman
-
